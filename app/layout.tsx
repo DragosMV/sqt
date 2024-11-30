@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
+//import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import Link from "next/link";
 import Logout from "@/components/Logout";
 
-export const geistSans = localFont({
+const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
@@ -28,7 +28,7 @@ export default function RootLayout({
   const header = (
     <header className="p-4 sm:p-8 flex items-center justify-between gap-4">
       <Link href={'/'}>
-      <h1 className={`${geistSans.variable} text-base sm:text-lg font-bold italic textGradient`}>Software Quality Temple</h1>
+      <h1 className={`${geistSans.variable} font-geist-sans text-base sm:text-lg font-bold italic textGradient`}>Software Quality Temple</h1>
       </Link>
       <Logout/>
     </header>

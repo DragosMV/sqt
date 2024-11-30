@@ -8,12 +8,12 @@ import Link from 'next/link'
 export default function Logout() {
     
     const authContext = useAuth();
+    const pathname = usePathname()
 
     if (!authContext) {
       return <div>Loading...</div>;
     }
     const { logout, currentUser } = authContext
-    const pathname = usePathname()
 
     if (!currentUser) {
         return null

@@ -10,7 +10,7 @@ export default function Summary() {
     // Handle the case when context is null (e.g., throw an error, return null, etc.)
     throw new Error('Auth context is missing!');
   }
-  const { currentUser, userDataObj, setUserDataObj, loading } = authContext;
+  const { currentUser, loading } = authContext;
 
   if (loading) {
     return <Loading/>
