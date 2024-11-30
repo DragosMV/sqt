@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+ /* This is a custom text style */
+.textGradient {
+    background: -webkit-linear-gradient(#1ABC9C, #16A085);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
