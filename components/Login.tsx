@@ -14,7 +14,7 @@ export default function Login() {
   if (!authContext) {
     return <div>Loading...</div>;
   }
-  const {signup, login} = authContext
+  const {signup, login, loginWithGoogle, loading} = authContext
 
   async function handleSubmit() {
     if (!email || !password || password.length < 6) {
@@ -39,6 +39,18 @@ export default function Login() {
     setAuthenticating(false)
   }
 }
+async function handleGoogleLogin() {
+  try {
+    console.log('Logging in with Google');
+    await loginWithGoogle();
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.log('Google login error:', err.message);
+    } else {
+      console.log('An unknown error occurred during Google login');
+    }
+  }
+}
 
   return (
     <div className='flex flex-col flex-1 justify-center items-center gap-4'>
@@ -56,6 +68,20 @@ export default function Login() {
       <p className='text-center'>
       {isRegister ? 'Already have an account? ' : 'Don\'t have an account? '}<button onClick={() => setIsRegister(!isRegister)} className='text-cyan-600'> {isRegister ? 'Sign in' : 'Sign up'}</button>
       </p>
+      <div className="flex items-center justify-center mt-4">
+        <button
+          onClick={handleGoogleLogin}
+          disabled={loading || authenticating}
+          className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-full hover:bg-gray-100 shadow"
+        >
+          <img
+            src="/google-icon.png" // Use the path to your Google icon or logo
+            alt="Google logo"
+            className="w-6 h-6"
+          />
+          {loading ? 'Loading...' : 'Sign in with Google'}
+        </button>
+      </div>
     </div>
   )
 }

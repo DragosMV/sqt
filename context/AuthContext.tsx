@@ -1,6 +1,6 @@
 'use client'
 import { auth, db } from '@/firebase'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User, UserCredential } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User, UserCredential, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore';
 import React, {useContext, useState, useEffect} from 'react'
 
@@ -20,6 +20,7 @@ interface AuthContextType {
     signup: (email: string, password: string) => Promise<UserCredential>;
     logout: () => Promise<void>;
     login: (email: string, password: string) => Promise<UserCredential>;
+    loginWithGoogle: () => Promise<void>;
     loading: boolean;
 }
 
@@ -48,6 +49,40 @@ export function AuthProvider({ children } :AuthProviderProps) {
         setUserDataObj(null)
         setCurrentUser(null)
         return signOut(auth)
+    }
+
+    async function loginWithGoogle() {
+        const provider = new GoogleAuthProvider();
+        try {
+            setLoading(true);
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+
+            if (user) {
+                console.log('Google Sign-In successful, fetching user data...');
+                const docRef = doc(db, 'users', user.uid);
+                const docSnap = await getDoc(docRef);
+                let firebaseData: UserData = { email: user.email || '' };
+
+                if (docSnap.exists()) {
+                    console.log('Found user data in Firestore');
+                    firebaseData = docSnap.data() as UserData;
+                } else {
+                    console.log('No user data found in Firestore, creating new entry...');
+                    // You can add logic here to save the user to Firestore if needed
+                }
+
+                setUserDataObj(firebaseData);
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                console.error('Google Sign-In Error:', err.message);
+            } else {
+                console.error('An unknown error occurred during Google Sign-In');
+            }
+        } finally {
+            setLoading(false);
+        }
     }
 
     // Function below triggers when a state change to user auth happens
@@ -90,6 +125,7 @@ export function AuthProvider({ children } :AuthProviderProps) {
         signup,
         logout,
         login,
+        loginWithGoogle,
         loading
     }
     return (
