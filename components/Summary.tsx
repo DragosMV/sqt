@@ -3,6 +3,7 @@ import React from 'react'
 import Loading from './Loading'
 import Login from './Login'
 import { useAuth } from '@/context/AuthContext'
+import { auth } from '@/firebase'
 
 export default function Summary() {
   const authContext = useAuth()
@@ -21,6 +22,6 @@ export default function Summary() {
   }
 
   return (
-    <div>Summary</div>
+    <div>Hello there! You are now successfully logged in your account associated with the following email: {auth.currentUser?.email}</div>
   )
 }
