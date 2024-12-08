@@ -71,14 +71,7 @@ async function handleGoogleLogin() {
       <div className="flex items-center justify-center mt-4">
         <button
           onClick={handleGoogleLogin}
-          disabled={loading || authenticating}
-          className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-full hover:bg-gray-100 shadow"
-        >
-          <img
-            src="/google-icon.png" // Use the path to your Google icon or logo
-            alt="Google logo"
-            className="w-6 h-6"
-          />
+          className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-full hover:bg-gray-100">
           {loading ? 'Loading...' : 'Sign in with Google'}
         </button>
       </div>
