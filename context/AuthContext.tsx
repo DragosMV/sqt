@@ -1,6 +1,6 @@
 'use client'
 import { auth, db } from '@/firebase'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User, UserCredential } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User, UserCredential, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore';
 import React, {useContext, useState, useEffect} from 'react'
 
@@ -20,6 +20,7 @@ interface AuthContextType {
     signup: (email: string, password: string) => Promise<UserCredential>;
     logout: () => Promise<void>;
     login: (email: string, password: string) => Promise<UserCredential>;
+    loginWithGoogle: () => Promise<void>;
     loading: boolean;
 }
 
@@ -48,6 +49,19 @@ export function AuthProvider({ children } :AuthProviderProps) {
         setUserDataObj(null)
         setCurrentUser(null)
         return signOut(auth)
+    }
+
+    async function loginWithGoogle() {
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                console.error('Google Sign-In Error:', err.message);
+            } else {
+                console.error('An unknown error occurred during Google Sign-In');
+            }
+        } 
     }
 
     // Function below triggers when a state change to user auth happens
@@ -90,6 +104,7 @@ export function AuthProvider({ children } :AuthProviderProps) {
         signup,
         logout,
         login,
+        loginWithGoogle,
         loading
     }
     return (
