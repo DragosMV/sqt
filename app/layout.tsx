@@ -1,4 +1,4 @@
-//import type { Metadata } from "next";
+import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
@@ -16,10 +16,10 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-// export const metadata: Metadata = {
-//   title: "SoftwareQualityTemple",
-//   description: "Learn software testing in a gamified way!",
-// };
+export const metadata: Metadata = {
+  title: "SoftwareQualityTemple",
+  description: "Learn software testing in a gamified way!",
+};
 
 export default function RootLayout({
   children,
