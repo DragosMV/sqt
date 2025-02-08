@@ -2,7 +2,7 @@ import Main from "@/components/Main";
 import Summary from "@/components/Summary";
 
 export const metadata = {
-    title: "SoftwareQualityTemple ⋅ Summary"
+    title: "SoftwareQualityTemple ⋅ Dashboard"
 }
 
 
