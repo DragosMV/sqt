@@ -34,10 +34,6 @@ export default function Summary() {
         const course2Stage = await getUserField(currentUser.uid, "course2Stage");
         const course3Stage = await getUserField(currentUser.uid, "course3Stage");
 
-        console.log(course1Stage);
-        console.log(course2Stage);
-        console.log(course3Stage);
-
         setCourseStages({
           course1: course1Stage ?? 1,
           course2: course2Stage ?? 1,
@@ -48,9 +44,6 @@ export default function Summary() {
         const completed = await getUserField(currentUser.uid, "coursesCompleted");
         setCoursesCompleted(completed ?? 0);
       };
-
-
-
       fetchData();
     }
   }, []);
@@ -76,8 +69,7 @@ export default function Summary() {
       <Link href={'/profile'}>
         <button 
           onClick={() => console.log("Profile clicked")}
-          className="bg-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow text-gray-700 font-semibold"
-        >
+          className="bg-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow text-gray-700 font-semibold">
           Profile Page
         </button>
       </Link>
@@ -92,8 +84,8 @@ export default function Summary() {
           <button
             key={course}
             onClick={() => handleCourseClick(course)}
-            className="w-full bg-white py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-150 border-2 border-purple-100 hover:border-purple-200 text-lg font-semibold text-gray-700 flex items-center justify-between"
-          >
+            className="w-full bg-white py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-150 border-2 
+            border-purple-100 hover:border-purple-200 text-lg font-semibold text-gray-700 flex items-center justify-between">
             <span>Course {index + 1}</span>
             <span className="text-purple-500 text-2xl">
               {["🧪", "🔍", "🛠️"][index]}
