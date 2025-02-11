@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from '@/context/AuthContext'
 import { updateUserField } from '@/utils/database_helpers';
