@@ -23,32 +23,28 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly <{ children: React.ReactNode; }>)
- {
-  const header = (
-    <header className="p-4 sm:p-8 flex items-center justify-between gap-4">
-      <Link href={'/'}>
-      <h1 className={`${geistSans.variable} font-geist-sans text-base sm:text-lg font-bold italic textGradient`}>Software Quality Temple</h1>
-      </Link>
-      <Logout/>
-    </header>
-  )
-
-  const footer = (
-    <footer className="p-4 sm:p-8 grid place-items-center">
-      <p className={`${geistSans.variable} font-bold`}>Hello there!😉</p>
-    </footer>
-  )
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <AuthProvider>
-      <body
-        className={`'w-full max-w-[1920px] mx-auto text-sm sm:text-base min-h-screen flex flex-col text-slate-800 ' + ${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {header}
-        {children}
-        {footer}
-      </body>
-    </AuthProvider>
+        <body className={`min-h-screen flex flex-col ${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <header className="p-4 sm:p-8 flex items-center justify-between gap-4">
+            <Link href={"/"}>
+              <h1 className="font-geist-sans text-base sm:text-lg font-bold italic textGradient">
+                Software Quality Temple
+              </h1>
+            </Link>
+            <Logout />
+          </header>
+
+          {/* Main should grow to fill available space */}
+          <main className="flex-grow flex flex-col">{children}</main>
+
+          <footer className="p-4 sm:p-8 grid place-items-center">
+            <p className="font-bold">Hello there!😉</p>
+          </footer>
+        </body>
+      </AuthProvider>
     </html>
   );
 }

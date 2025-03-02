@@ -1,15 +1,17 @@
 import React from 'react';
-import MultipleChoiceQuestion from '@/components/MCQ';
 
-const Stage1Page: React.FC = () => {
+export default function Stage1Page() {
   return (
-    <div className="flex flex-col items-center justify-center flex-1 p-4">
-      <MultipleChoiceQuestion 
-        question="What is the capital of France?" 
-        correctAnswer="Paris" 
-        answerVariants={["Paris", "Madrid", "Rome", "Berlin"]} />
+    <div className="flex items-center justify-center bg-black">
+      <iframe
+        width="1200"
+        height="600"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=fJ6tLpKaifk9OQpB"
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="rounded-lg shadow-lg block"
+      />
     </div>
   );
-};
-
-export default Stage1Page;
+}

@@ -10,7 +10,7 @@ export default function SummaryPage() {
 
     return (
     <Main>
-        <Summary/>
+      <Summary/>
     </Main>
     );
 }

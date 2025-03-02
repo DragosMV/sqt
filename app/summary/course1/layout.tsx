@@ -55,7 +55,7 @@ export default function StageLayout({children}: {children: ReactNode}) {
   return (
     <div className="flex flex-col items-center justify-center flex-1 p-4">
     {/* Main Content */}
-    <main className="flex-1 flex items-center justify-center p-6">{children}</main>
+    <main className="flex-grow flex items-center justify-center p-6">{children}</main>
 
     {/* Footer Navigation */}
     <footer className="w-full p-4 flex justify-between">
