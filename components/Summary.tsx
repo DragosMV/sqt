@@ -46,7 +46,7 @@ export default function Summary() {
       };
       fetchData();
     }
-  }, []);
+  }, [currentUser]);
 
   if (loading) {
     return <Loading/>

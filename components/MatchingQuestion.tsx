@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { DndContext, closestCorners } from "@dnd-kit/core";
 import { SortableContext, arrayMove, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { DragEndEvent } from "@dnd-kit/core";
 
 interface MatchingPair {
   id: string;
@@ -34,7 +35,7 @@ const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs }) 
     return () => window.removeEventListener("resize", updateHeight);
   }, [userMatches]);
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
