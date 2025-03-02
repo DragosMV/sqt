@@ -1,7 +1,16 @@
-export default function ProfilePage() {
-    return (
-      <div className="flex flex-col items-center justify-center flex-1 p-4">
-        <h1 className="text-3xl font-bold text-gray-800">Welcome to stage8 course1</h1>
-      </div>
-    );
-  }
+import TrueFalseQuestion from "@/components/TrueFalseQuestion";
+
+export default function Stage8Page() {
+  return (
+    <div className="flex flex-col items-center bg-gray-50 space-y-8 p-8">
+      <TrueFalseQuestion
+        question="Unit tests should test multiple components at once."
+        correctAnswer={false}
+      />
+      <TrueFalseQuestion
+        question="Mocking is used to replace dependencies during testing."
+        correctAnswer={true}
+      />
+    </div>
+  );
+}

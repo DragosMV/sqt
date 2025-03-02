@@ -1,7 +1,17 @@
-export default function ProfilePage() {
-    return (
-      <div className="flex flex-col items-center justify-center flex-1 p-4">
-        <h1 className="text-3xl font-bold text-gray-800">Welcome to stage5 course1</h1>
-      </div>
-    );
-  }
+import React from 'react';
+
+export default function Stage5Page() {
+  return (
+    <div className="flex items-center justify-center bg-black">
+      <iframe
+        width="1200"
+        height="600"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=fJ6tLpKaifk9OQpB"
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="rounded-lg shadow-lg block"
+      />
+    </div>
+  );
+}
