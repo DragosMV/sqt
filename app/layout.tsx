@@ -37,12 +37,8 @@ export default function RootLayout({
             <Logout />
           </header>
 
-          {/* Main should grow to fill available space */}
           <main className="flex-grow flex flex-col">{children}</main>
 
-          <footer className="p-4 sm:p-8 grid place-items-center">
-            <p className="font-bold">Hello there!😉</p>
-          </footer>
         </body>
       </AuthProvider>
     </html>
