@@ -6,7 +6,6 @@ import { CSS } from "@dnd-kit/utilities";
 import { DragEndEvent } from "@dnd-kit/core";
 import { updateUserField, fetchUserHighestStage } from "@/utils/database_helpers";
 import { useAuth } from "@/context/AuthContext";
-import Loading from '@/components/Loading';
 
 interface MatchingPair {
   id: string;
@@ -29,13 +28,10 @@ const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs, st
 
   const authContext = useAuth();
 
-  if (!authContext?.currentUser) {
-    return <Loading/>;
-  }
-
-  const { currentUser } = authContext;
+  const { currentUser } = authContext || {};
 
   useEffect(() => {
+    if (!currentUser) return;
     const updateHeight = () => {
       const termElements = document.querySelectorAll(".term-item");
       const definitionElements = document.querySelectorAll(".definition-item");
@@ -46,7 +42,7 @@ const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs, st
     updateHeight();
     window.addEventListener("resize", updateHeight);
     return () => window.removeEventListener("resize", updateHeight);
-  }, [userMatches]);
+  }, [userMatches, currentUser]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -65,6 +61,7 @@ const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs, st
   const handleCheckAnswers = async () => {
     setIsLoading(true);
     try {
+      if (!currentUser) return;
       const isCorrect = checkAnswers();
       if (isCorrect) {
         setFeedbackMessage('Correct! You can now proceed to the next stage.');

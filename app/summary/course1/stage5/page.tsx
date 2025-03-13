@@ -2,19 +2,16 @@
 import React, {useEffect} from 'react';
 import { updateUserField, fetchUserHighestStage } from "@/utils/database_helpers";
 import { useAuth } from "@/context/AuthContext";
-import Loading from '@/components/Loading';
 
 export default function Stage5Page() {
   const authContext = useAuth();
   const course = 'course1'; 
-  if (!authContext?.currentUser) {
-    return <Loading></Loading>;
-  }
 
-  const { currentUser } = authContext;
+  const { currentUser } = authContext || {};
 
   useEffect(() => {
     const handleStageUpdate = async () => {
+      if (!currentUser) return;
       const userHighestStage = await fetchUserHighestStage(currentUser.uid, course);
 
       if (userHighestStage === 5) {
@@ -22,7 +19,7 @@ export default function Stage5Page() {
       }
     };
     handleStageUpdate();
-  }, [course]);
+  }, [course, currentUser]);
 
   return (
     <div className="flex items-center justify-center bg-black">
