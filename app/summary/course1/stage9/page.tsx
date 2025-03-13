@@ -1,6 +1,29 @@
-import React from 'react';
+"use client"
+import React, {useEffect} from 'react';
+import { updateUserField, fetchUserHighestStage } from "@/utils/database_helpers";
+import { useAuth } from "@/context/AuthContext";
+import Loading from '@/components/Loading';
 
 export default function Stage9Page() {
+  const authContext = useAuth();
+  const course = 'course1'; 
+  if (!authContext?.currentUser) {
+    return <Loading></Loading>;
+  }
+
+  const { currentUser } = authContext;
+
+  useEffect(() => {
+    const handleStageUpdate = async () => {
+      const userHighestStage = await fetchUserHighestStage(currentUser.uid, course);
+
+      if (userHighestStage === 9) {
+        await updateUserField(currentUser.uid, `${course}Stage`,10) 
+      }
+    };
+    handleStageUpdate();
+  }, [course]);
+  
   return (
     <div className="flex items-center justify-center bg-black">
       <iframe

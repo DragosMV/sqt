@@ -35,9 +35,9 @@ export default function Summary() {
         const course3Stage = await getUserField(currentUser.uid, "course3Stage");
 
         setCourseStages({
-          course1: course1Stage ?? 1,
-          course2: course2Stage ?? 1,
-          course3: course3Stage ?? 1,
+          course1: course1Stage ?? 2,
+          course2: course2Stage ?? 2,
+          course3: course3Stage ?? 2,
         });
 
         // Get total completed courses

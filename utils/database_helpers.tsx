@@ -46,4 +46,15 @@ export const updateUserField = async (
     console.error("Error updating user field:", error);
     return false;
   }
+
 };
+
+  export const fetchUserHighestStage = async (userId: string, course: string): Promise<number> => {
+    const userDocRef = doc(db, "users", userId);
+    const userSnapshot = await getDoc(userDocRef);
+
+    if (!userSnapshot.exists()) return 1; // Default to stage 1 if no user data
+
+    const userData = userSnapshot.data();
+    return userData?.[`${course}Stage`] || 1;
+  };

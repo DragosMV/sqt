@@ -1,20 +1,40 @@
 "use client"
 import { useState } from 'react';
+import { useAuth } from "@/context/AuthContext";
+import { updateUserField, fetchUserHighestStage } from "@/utils/database_helpers";
+import Loading from '@/components/Loading';
+
 
 interface MultipleChoiceQuestionProps {
   question: string;
   correctAnswer: string;
   answerVariants: string[];
+  stageNumber: number;
 }
 
-const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({ question, correctAnswer, answerVariants }) => {
+const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({ question, correctAnswer, answerVariants, stageNumber }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const authContext = useAuth();
 
-  const handleAnswerClick = (answer: string) => {
+  if (!authContext?.currentUser) {
+    return <Loading/>;
+  }
+
+  const { currentUser } = authContext;
+
+  const handleAnswerClick = async (answer: string) => {
     setSelectedAnswer(answer);
     if (answer === correctAnswer) {
       setFeedbackMessage('Correct! You can now proceed to the next stage.');
+      // Fetch the user's current highest stage
+      const highestStage = await fetchUserHighestStage(currentUser.uid, "course1");
+      console.log(highestStage)
+      console.log(stageNumber)
+      // Only update if the user is progressing to a new stage
+      if (stageNumber + 1 > highestStage) {
+        await updateUserField(currentUser.uid, "course1Stage", stageNumber + 1);
+      }
     } else {
       setFeedbackMessage('Incorrect! Please try again.');
     }
@@ -34,7 +54,9 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({ questio
         ))}
       </div>
       {feedbackMessage && (
-        <div className="mt-4 p-4 text-center bg-blue-100 text-blue-800 rounded">
+        <div className={`mt-4 p-4 text-center rounded ${
+          feedbackMessage.includes('Correct') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+        }`}>
           {feedbackMessage}
         </div>
       )}

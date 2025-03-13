@@ -8,7 +8,8 @@ const Stage4Page: React.FC = () => {
         question="In the context of unit testing, what does the term 'mocking' refer to?" 
         correctAnswer="Creating objects that simulate the behavior of real objects" 
         answerVariants={["Writing code to test the functionality of the user interface", "Combining multiple unit tests to test a larger feature", 
-        "Ensuring that the test code is reviewed for potential bugs", "Creating objects that simulate the behavior of real objects"]} />
+        "Ensuring that the test code is reviewed for potential bugs", "Creating objects that simulate the behavior of real objects"]}
+        stageNumber={4} />
     </div>
   );
 };

@@ -8,7 +8,8 @@ const Stage2Page: React.FC = () => {
         question="What is the main purpose of unit testing?" 
         correctAnswer="To verify that individual components of code work as expected" 
         answerVariants={["To test the entire application as a whole", "To check how the system performs under load", 
-        "To verify that individual components of code work as expected", "To ensure that the database fetches the correct data"]} />
+        "To verify that individual components of code work as expected", "To ensure that the database fetches the correct data"]}
+        stageNumber={2} />
     </div>
   );
 };

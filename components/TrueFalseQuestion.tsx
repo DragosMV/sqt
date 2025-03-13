@@ -5,19 +5,22 @@ import { useState } from "react";
 interface TrueFalseQuestionProps {
   question: string;
   correctAnswer: boolean;
+  onAnswerCheck: (isCorrect: boolean) => void; // Callback to notify parent
 }
 
-const TrueFalseQuestion: React.FC<TrueFalseQuestionProps> = ({ question, correctAnswer }) => {
+const TrueFalseQuestion: React.FC<TrueFalseQuestionProps> = ({
+  question,
+  correctAnswer,
+  onAnswerCheck,
+}) => {
   const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   const handleAnswerClick = (answer: boolean) => {
     setSelectedAnswer(answer);
-    if (answer === correctAnswer) {
-      setFeedbackMessage("Correct! You can now proceed to the next stage.");
-    } else {
-      setFeedbackMessage("Incorrect! Please try again.");
-    }
+    const isCorrect = answer === correctAnswer;
+    setFeedbackMessage(isCorrect ? "Correct!" : "Incorrect! Please try again.");
+    onAnswerCheck(isCorrect); // Notify parent about correctness
   };
 
   return (
@@ -42,7 +45,9 @@ const TrueFalseQuestion: React.FC<TrueFalseQuestionProps> = ({ question, correct
         </button>
       </div>
       {feedbackMessage && (
-        <div className="mt-4 p-3 bg-blue-100 text-blue-800 rounded">
+        <div className={`mt-4 p-3 text-center rounded ${
+          feedbackMessage.includes("Correct") ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+        }`}>
           {feedbackMessage}
         </div>
       )}

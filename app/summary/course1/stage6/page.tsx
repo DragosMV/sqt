@@ -9,7 +9,7 @@ const matchingPairs1 = [
 export default function Stage6Page() {
   return (
     <div>
-      <MatchingQuestion question="Match the testing concepts" pairs={matchingPairs1} />
+      <MatchingQuestion question="Match the definition to the correct term" pairs={matchingPairs1} stageNumber={6} />
     </div>
   );
 }
