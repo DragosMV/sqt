@@ -17,9 +17,10 @@ interface MatchingQuestionProps {
   question: string;
   pairs: MatchingPair[];
   stageNumber: number;
+  onIncorrectAnswer?: () => void; 
 }
 
-const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs, stageNumber }) => {
+const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs, stageNumber, onIncorrectAnswer}) => {
   const shuffledDefinitions = [...pairs].sort(() => Math.random() - 0.5);
   const [userMatches, setUserMatches] = useState<MatchingPair[]>(shuffledDefinitions);
   const [maxHeight, setMaxHeight] = useState<number>(0);
@@ -75,6 +76,7 @@ const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs, st
         }
       } else {
         setFeedbackMessage('Incorrect! Please try again.');
+        if (onIncorrectAnswer) onIncorrectAnswer();
       }
     } catch (error) {
       console.error("Error updating user progress:", error);

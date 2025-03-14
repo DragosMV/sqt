@@ -10,9 +10,10 @@ interface MultipleChoiceQuestionProps {
   correctAnswer: string;
   answerVariants: string[];
   stageNumber: number;
+  onIncorrectAnswer?: () => void;
 }
 
-const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({ question, correctAnswer, answerVariants, stageNumber }) => {
+const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({ question, correctAnswer, answerVariants, stageNumber, onIncorrectAnswer}) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const authContext = useAuth();
@@ -37,6 +38,7 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({ questio
       }
     } else {
       setFeedbackMessage('Incorrect! Please try again.');
+      if (onIncorrectAnswer) onIncorrectAnswer();
     }
   };
 
