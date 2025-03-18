@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAuth } from "@/context/AuthContext";
 import { updateUserField, fetchUserHighestStage } from "@/utils/database_helpers";
 import Loading from '@/components/Loading';
+import { handleCorrectAnswer } from "@/utils/answerHandlers";
 
 
 interface MultipleChoiceQuestionProps {
@@ -27,18 +28,17 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({ questio
   const handleAnswerClick = async (answer: string) => {
     setSelectedAnswer(answer);
     if (answer === correctAnswer) {
-      setFeedbackMessage('Correct! You can now proceed to the next stage.');
+      const points = await handleCorrectAnswer(currentUser, stageNumber);
+      setFeedbackMessage(`Correct! You earned ${points ?? 0} points! You can now proceed to the next stage.`);
       // Fetch the user's current highest stage
       const highestStage = await fetchUserHighestStage(currentUser.uid, "course1");
-      console.log(highestStage)
-      console.log(stageNumber)
       // Only update if the user is progressing to a new stage
       if (stageNumber + 1 > highestStage) {
         await updateUserField(currentUser.uid, "course1Stage", stageNumber + 1);
       }
     } else {
       setFeedbackMessage('Incorrect! Please try again.');
-      if (onIncorrectAnswer) onIncorrectAnswer();
+      if (onIncorrectAnswer) onIncorrectAnswer(); // function to update attempts
     }
   };
 

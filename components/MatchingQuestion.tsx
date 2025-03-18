@@ -6,6 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { DragEndEvent } from "@dnd-kit/core";
 import { updateUserField, fetchUserHighestStage } from "@/utils/database_helpers";
 import { useAuth } from "@/context/AuthContext";
+import { handleCorrectAnswer } from "@/utils/answerHandlers";
 
 interface MatchingPair {
   id: string;
@@ -65,7 +66,8 @@ const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs, st
       if (!currentUser) return;
       const isCorrect = checkAnswers();
       if (isCorrect) {
-        setFeedbackMessage('Correct! You can now proceed to the next stage.');
+        const points = await handleCorrectAnswer(currentUser, stageNumber);
+        setFeedbackMessage(`Correct! You earned ${points ?? 0} points! You can now proceed to the next stage.`);
 
         // Fetch the user's current highest stage
         const highestStage = await fetchUserHighestStage(currentUser.uid, "course1");

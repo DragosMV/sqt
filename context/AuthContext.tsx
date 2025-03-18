@@ -49,7 +49,10 @@ const createOrUpdateUserDocument = async (user: User): Promise<void> => {
         level: 1,
         points: 0,
         title: "Novice",
-        course1Attempts: Array(10).fill(1) 
+        course1Attempts: Array(10).fill(1),
+        knowledgePoints: 0,
+        conceptUnderstandingPoints: 0,
+        conceptApplicationPoints: 0
         // Add other user fields as needed
       });
     } else {

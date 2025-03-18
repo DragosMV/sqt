@@ -2,7 +2,9 @@
 import { useState, useEffect, useCallback } from "react"; // Import useEffect
 import TrueFalseQuestion from "@/components/TrueFalseQuestion";
 import { useAuth } from "@/context/AuthContext";
-import { updateUserField, fetchUserHighestStage } from "@/utils/database_helpers";
+import { updateUserField, fetchUserHighestStage, getUserField, getCourse1StageAttempts, updateCourse1StageAttempts } from "@/utils/database_helpers";
+import { toast } from "react-hot-toast"; 
+import { Toaster } from "react-hot-toast"; 
 
 export default function Stage8Page() {
   const [isQuestion1Correct, setIsQuestion1Correct] = useState<boolean | null>(null);
@@ -21,10 +23,20 @@ export default function Stage8Page() {
       if (9 > highestStage) {
         await updateUserField(currentUser.uid, "course1Stage", 9);
       }
-      alert("Both answers are correct! You can now proceed to the next stage.");
+      let currentAttempts = await getCourse1StageAttempts(currentUser.uid, 8);
+      if (!currentAttempts) currentAttempts = 0;
+      let pointsEarned = 10; // 
+      if (currentAttempts > 999) pointsEarned = 0; // user already answered question correctly
+      // award 10 points when both questions are answered correctly.
+      const pointsRaw = await getUserField(currentUser.uid, "points");
+      const currentPoints = pointsRaw !== null ? Number(pointsRaw) : 0;
+      await updateUserField(currentUser.uid, "points", currentPoints + pointsEarned);
+      await updateCourse1StageAttempts(currentUser.uid, 8, 1000);
+
+      toast.success(`Correct! You earned ${pointsEarned ?? 0} points! You can now proceed to the next stage.`); // Modern notification
     } catch (error) {
       console.error("Error updating user progress:", error);
-      alert("An error occurred. Please try again.");
+      toast.error("An error occurred. Please try again.");
     }
   }, [currentUser]);
 
@@ -37,6 +49,7 @@ export default function Stage8Page() {
 
   return (
     <div className="flex flex-col items-center bg-gray-50 space-y-8 p-8">
+      <Toaster/>
       <TrueFalseQuestion
         question="Unit tests should test multiple components at once."
         correctAnswer={false}

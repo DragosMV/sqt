@@ -8,14 +8,14 @@ export default function Hero() {
   const authContext = useAuth();
 
   return (
-    <div className='py-4 md:py-10 flex flex-col gap-8 sm:gap-10'>
+    <div className='mt-12 py-4 md:py-10 flex flex-col gap-8 sm:gap-10'>
       <h1 className={`text-5xl sm:text-6xl md:text-7xl text-center font-bold text-#1ABC9C-300`}>
         Software Quality Temple
-        <span className='textGradient'> helps you</span> improve your <span className='textGradient'>software testing</span> skills in a fun way!
+        <span className='textGradient'> helps you</span> improve your <span className='textGradient'>software testing</span> skills in a gamified way!
       </h1>
-      <p className='text-lg sm:text-xl md:text-2xl text-center w-full mx-auto max-w-[700px]'>
-        The Temple allows you to practice for as long as you want, being able to
-        <span className='font-semibold'> pause and resume at any time!</span>
+      <p className='mt-8 text-lg sm:text-xl md:text-2xl text-center w-full mx-auto max-w-[700px]'>
+        The Temple guides you through the content in small chunks at a time,
+        <span className='font-semibold'> with the ability to pause and resume as you go!</span>
       </p>
 
       {/* Conditional Rendering */}
