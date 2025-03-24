@@ -12,10 +12,10 @@ const Stage4Page: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center flex-1 p-4">
       <MultipleChoiceQuestion 
-        question="In the context of unit testing, what does the term 'mocking' refer to?" 
-        correctAnswer="Creating objects that simulate the behavior of real objects" 
-        answerVariants={["Writing code to test the functionality of the user interface", "Combining multiple unit tests to test a larger feature", 
-        "Ensuring that the test code is reviewed for potential bugs", "Creating objects that simulate the behavior of real objects"]}
+        question="What is an advantage of unit testing?" 
+        correctAnswer="Enables early detection of issues during development" 
+        answerVariants={["It ensures the whole application can run correctly", "It evaluates the resources used by your code", 
+        "It evaluates the time it takes for your code to run", "Enables early detection of issues during development"]}
         stageNumber={stageNumber}
         onIncorrectAnswer={() => handleIncorrectAnswer(currentUser, stageNumber)}/>
     </div>

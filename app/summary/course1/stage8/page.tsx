@@ -28,9 +28,14 @@ export default function Stage8Page() {
       let pointsEarned = 10; // 
       if (currentAttempts > 999) pointsEarned = 0; // user already answered question correctly
       // award 10 points when both questions are answered correctly.
-      const pointsRaw = await getUserField(currentUser.uid, "points");
-      const currentPoints = pointsRaw !== null ? Number(pointsRaw) : 0;
-      await updateUserField(currentUser.uid, "points", currentPoints + pointsEarned);
+      // loop through all selected fields and update points
+      const fieldsToUpdate: string[] = ['points', 'knowledgePoints', 'conceptUnderstandingPoints']
+      for (const field of fieldsToUpdate) {
+        const currentValueRaw = await getUserField(currentUser.uid, field);
+        const currentValue = currentValueRaw !== null ? Number(currentValueRaw) : 0;
+        await updateUserField(currentUser.uid, field, currentValue + pointsEarned);
+      }
+      
       await updateCourse1StageAttempts(currentUser.uid, 8, 1000);
 
       toast.success(`Correct! You earned ${pointsEarned ?? 0} points! You can now proceed to the next stage.`); // Modern notification

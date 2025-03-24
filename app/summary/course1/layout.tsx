@@ -2,7 +2,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from '@/context/AuthContext'
-import {fetchUserHighestStage, updateUserField } from '@/utils/database_helpers';
+import {fetchUserHighestStage, updateUserField, getCourse1StageAttempts, getUserField } from '@/utils/database_helpers';
 import Login from "@/components/Login";
 import { usePathname } from "next/navigation";
 import Loading from '@/components/Loading'
@@ -54,6 +54,13 @@ export default function StageLayout({children}: {children: ReactNode}) {
   // Navigation handlers
   const handleNext = async () => {
     const highestStageReached = await fetchUserHighestStage(currentUser.uid, "course1"); // Get latest from DB
+    const currentAttempts = await getCourse1StageAttempts(currentUser.uid, 10);
+    const coursesCompleted = await getUserField(currentUser.uid, "coursesCompleted");
+    if (currentAttempts && stageNumber === 10 && currentAttempts >= 1000 && coursesCompleted < 1) {
+      await updateUserField(currentUser.uid, "coursesCompleted", (prev: number) => (prev ?? 0) + 1);
+      alert("Course completed!");
+      router.push("/summary");
+      return }
     if (stageNumber >= highestStageReached) {
       return alert("You must complete this stage before moving forward!");
     }

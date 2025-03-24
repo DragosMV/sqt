@@ -27,7 +27,7 @@ export default function Stage9Page() {
       <iframe
         width="1200"
         height="600"
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=fJ6tLpKaifk9OQpB"
+        src="https://www.youtube.com/embed/d8sHMG_2dyU"
         title="YouTube video player"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen

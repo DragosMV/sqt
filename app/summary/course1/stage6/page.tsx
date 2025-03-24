@@ -7,7 +7,7 @@ import { handleIncorrectAnswer} from "@/utils/answerHandlers";
 const matchingPairs1 = [
   { id: "1", term: "Mocking", definition: "Replaces dependencies in tests" },
   { id: "2", term: "Assertion", definition: "Checks expected vs actual result" },
-  { id: "3", term: "Test Fixture", definition: "Sets up test data/environment" },
+  { id: "3", term: "Testing Framework", definition: "Collection of methods designed to implement tests efficiently" },
 ];
 
 export default function Stage6Page() {
