@@ -6,6 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { DragEndEvent } from "@dnd-kit/core";
 import { updateUserField, fetchUserHighestStage } from "@/utils/database_helpers";
 import { useAuth } from "@/context/AuthContext";
+import { handleCorrectAnswer } from "@/utils/answerHandlers";
 
 interface MatchingPair {
   id: string;
@@ -17,9 +18,10 @@ interface MatchingQuestionProps {
   question: string;
   pairs: MatchingPair[];
   stageNumber: number;
+  onIncorrectAnswer?: () => void; 
 }
 
-const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs, stageNumber }) => {
+const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs, stageNumber, onIncorrectAnswer}) => {
   const shuffledDefinitions = [...pairs].sort(() => Math.random() - 0.5);
   const [userMatches, setUserMatches] = useState<MatchingPair[]>(shuffledDefinitions);
   const [maxHeight, setMaxHeight] = useState<number>(0);
@@ -64,7 +66,8 @@ const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs, st
       if (!currentUser) return;
       const isCorrect = checkAnswers();
       if (isCorrect) {
-        setFeedbackMessage('Correct! You can now proceed to the next stage.');
+        const points = await handleCorrectAnswer(currentUser, stageNumber);
+        setFeedbackMessage(`Correct! You earned ${points ?? 0} points! You can now proceed to the next stage.`);
 
         // Fetch the user's current highest stage
         const highestStage = await fetchUserHighestStage(currentUser.uid, "course1");
@@ -75,6 +78,7 @@ const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, pairs, st
         }
       } else {
         setFeedbackMessage('Incorrect! Please try again.');
+        if (onIncorrectAnswer) onIncorrectAnswer();
       }
     } catch (error) {
       console.error("Error updating user progress:", error);
