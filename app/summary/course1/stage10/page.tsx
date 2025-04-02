@@ -74,12 +74,23 @@ const Compiler = () => {
   
       // Check if all tests pass
       const testPassed = result.stderr && result.stderr.includes("OK");
-      if (testPassed) {
-        setOutput("✅ All tests passed! You can proceed to the next stage.");
+      console.log(result.stderr)
+
+      // Extract the number of tests ran
+      const ranTestsMatch = result.stderr.match(/Ran (\d+) test/);
+      const ranTests = ranTestsMatch ? parseInt(ranTestsMatch[1], 10) : 0;
+
+      // Check for failure keywords
+      const testFailed = result.stderr.includes("FAILED");
+      
+      if (ranTests >= 4 && testPassed && !testFailed) {
+        setOutput(`✅ ${ranTests} tests passed! You earned 10 points and can now complete the course!`);
         // Award points and update stage
         await handleCorrectAnswer(currentUser, stageNumber);
       } else {
-        setOutput(result.stdout || result.stderr || "No output");
+        setOutput(`❌ ${ranTests} tests ran. ${testFailed ? "Some tests failed." : "Not enough tests written." 
+        } You need at least 4 correct tests to earn points.`
+        );
       }
   
     } catch (error) {
