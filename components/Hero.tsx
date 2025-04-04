@@ -1,11 +1,34 @@
 "use client";
 import React from 'react';
+import { useEffect, useState } from 'react';
 import Button from './Button';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext'; 
+import { getUserField } from '@/utils/database_helpers';
 
 export default function Hero() {
+  const [participantNumber, setparticipantNumber] = useState<string>('');
   const authContext = useAuth();
+
+  if (authContext === null) {
+    throw new Error('Auth context is missing!');
+  }
+
+  const { currentUser } = authContext;
+  useEffect(() => {
+      const fetchUserData = async () => {
+        try {
+          if (currentUser) {
+          const participantNumber = await getUserField(currentUser.uid, "participantNumber");
+          setparticipantNumber(participantNumber);
+         }
+        }
+        catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
+      fetchUserData();
+    }, [currentUser]);
 
   return (
     <div className='mt-12 py-4 md:py-10 flex flex-col gap-8 sm:gap-10'>
@@ -22,8 +45,8 @@ export default function Hero() {
       {authContext?.currentUser ? (
         // user is logged in, display a welcome message
         <div className="text-center text-lg sm:text-xl md:text-2xl">
-          Hi, you are already logged in using the email:{" "}
-          <span className="font-semibold">{authContext.currentUser.email}</span>
+          Hi, you are already logged in. Your participant number is:{" "}
+          <span className="font-semibold">{participantNumber}</span>
         </div>
       ) : (
         // user is not logged in, display the Sign Up and Login buttons

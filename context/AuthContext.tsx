@@ -10,7 +10,7 @@ interface AuthProviderProps {
 
 interface UserData{
     name?: string; //Optional
-    email: string;
+    participantNumber: string;
 }
 
 interface AuthContextType {
@@ -24,6 +24,13 @@ interface AuthContextType {
     loading: boolean;
 }
 
+const generateParticipantNumber = (): string => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const letters = Array(2).fill('').map(() => chars.charAt(Math.floor(Math.random() * chars.length))).join('');
+    const numbers = Math.floor(10000000 + Math.random() * 90000000); // 8 digits
+    return `${letters}${numbers}`;
+  };
+
 const AuthContext = React.createContext<AuthContextType | null>(null);
 
 export function useAuth(){
@@ -32,6 +39,8 @@ export function useAuth(){
 
 const createOrUpdateUserDocument = async (user: User): Promise<void> => {
     if (!user) return;
+    let participantNumber = '';
+    participantNumber = generateParticipantNumber();
   
     const userDocRef = doc(db, "users", user.uid);
     const userSnapshot = await getDoc(userDocRef);
@@ -39,9 +48,7 @@ const createOrUpdateUserDocument = async (user: User): Promise<void> => {
     if (!userSnapshot.exists()) {
       // Create a new document in Firestore for the new user
       await setDoc(userDocRef, {
-        email: user.email,
-        createdAt: new Date(),
-        lastLogin: new Date(),
+        participantNumber,
         coursesCompleted: 0,
         course1Stage: 1,
         course2Stage: 1,
@@ -55,14 +62,6 @@ const createOrUpdateUserDocument = async (user: User): Promise<void> => {
         conceptApplicationPoints: 0
         // Add other user fields as needed
       });
-    } else {
-      // Optionally, update existing user data if needed
-      // For example, update 'lastLogin' timestamp
-      await setDoc(
-        userDocRef,
-        { lastLogin: new Date() },
-        { merge: true } // Merge with existing data
-      );
     }
   };
 
@@ -130,11 +129,9 @@ export function AuthProvider({ children } :AuthProviderProps) {
                 console.log('Fetching User Data')
                 const docRef = doc(db, 'users', user.uid)
                 const docSnap = await getDoc(docRef)
-                let firebaseData: UserData = { email: ''}
+                let firebaseData: UserData = { participantNumber: ''}
                 if (docSnap.exists()) {
-                    console.log('Found User Data')
                     firebaseData = docSnap.data() as UserData;
-                    console.log(firebaseData)
                     setUserDataObj(firebaseData);
                 }
             } catch (err: unknown) {
