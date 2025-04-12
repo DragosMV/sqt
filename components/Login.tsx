@@ -17,7 +17,7 @@ export default function Login() {
   const {signup, login, loginWithGoogle, loading} = authContext
 
   async function handleSubmit() {
-    if (!email || !password || password.length < 6) {
+    if (!email || !password) {
       return
     }
     setAuthenticating(true)
